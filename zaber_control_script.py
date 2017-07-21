@@ -128,13 +128,22 @@ def display_all_connected_devices():
 
 def set_settings_file_path(command):
 	global SETTINGS_FILE_LOCATION
+	global SETTINGS_DATA
 
 	if len(command.split("\"")) > 1:
 		cleaned_command = command.split("\"")[1]
 		SETTINGS_FILE_LOCATION = cleaned_command
 
+		try:
+			with open(SETTINGS_FILE_LOCATION, 'r') as settings_file:
+				raw_data = settings_file.read()
+
+			SETTINGS_DATA = decode_data(raw_data)
+		except:
+			pass
+
 		update_saved_settings_path_file()
-		save_settings_data()
+		#save_settings_data()
 	else:
 		print("ERROR : ssp command was not passed the correct parameters")
 
